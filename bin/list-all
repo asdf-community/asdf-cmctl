@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+function sort_versions() {
+  sed 'h; s/[+-]/./g; s/.p\([[:digit:]]\)/.z\1/; s/$/.z/; G; s/\n/ /' |
+    LC_ALL=C sort -t. -k 1,1 -k 2,2n -k 3,3n -k 4,4n -k 5,5n | awk '{print $2}'
+}
+
+function is_greater() {
+  [[ "$(printf '%s\n' "$1" "$2" | sort_versions | head -n1)" == "$2" ]]
+}
+
+function list_all() {
+  for version in $(git ls-remote --tags --refs https://github.com/jetstack/cert-manager.git | grep -o 'refs/tags/.*' | cut -d/ -f3- | sed 's/^v//'); do
+    # cmctl is provided since cert-manager v1.6.0.
+    # https://cert-manager.io/docs/release-notes/release-notes-1.6/
+    ! is_greater "1.5.99" "$version" && echo "$version"
+  done
+}
+
+list_all | sort_versions | xargs echo
+# vim: ai ts=2 sw=2 et sts=2 ft=sh

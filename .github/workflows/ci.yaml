@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+    paths_ignore: ["**.md"]
+  pull_request:
+    paths_ignore: ["**.md"]
+  schedule:
+  - cron: "0 0 * * *"
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+    - uses: asdf-vm/actions/plugin-test@v1
+      with:
+        command: cmctl version --client
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: make lint

@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+function install_cmctl() {
+  # local install_type=$1
+  local version=$2
+  local install_path=$3
+  local file="cmctl"
+  local bin_install_path="${install_path}/bin"
+  local bin_path="${bin_install_path}/${file}"
+  local kernel; kernel="$(uname -s | tr "[:upper:]" "[:lower:]")"
+
+  local architecture
+  case "$(uname -m)" in
+    aarch64* | arm64) architecture="arm64" ;;
+    armv5* | armv6* | armv7*) architecture="arm" ;;
+    i686*) architecture="386" ;;
+    x86_64*) architecture="amd64" ;;
+    *)
+      echo "Unsupported architecture" >&2
+      exit 1
+      ;;
+  esac
+
+  local download_url="https://github.com/jetstack/cert-manager/releases/download/v${version}/cmctl-${kernel}-${architecture}.tar.gz"
+
+  echo "Downloading cmctl from ${download_url}"
+
+  local tempdir="${TMPDIR:-"$(mktemp -d)"}"
+
+  curl -sL "$download_url" | tar xz -C "$tempdir" "$file"
+
+  mkdir -p "$bin_install_path"
+  mv "${tempdir}/${file}" "$bin_path"
+  chmod +x "$bin_path"
+}
+
+install_cmctl "$ASDF_INSTALL_TYPE" "$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
+# vim: ai ts=2 sw=2 et sts=2 ft=sh
