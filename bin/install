@@ -2,6 +2,10 @@
 
 set -euo pipefail
 
+SCRIPT_ROOT="$(cd "$(dirname "$0")"; pwd)"
+# shellcheck disable=SC1090
+source "${SCRIPT_ROOT}/../lib/utils.sh"
+
 function install_cmctl() {
   # local install_type=$1
   local version=$2
@@ -29,7 +33,14 @@ function install_cmctl() {
 
   local tempdir="${TMPDIR:-"$(mktemp -d)"}"
 
-  curl -sL "$download_url" | tar xz -C "$tempdir" "$file"
+  local target_file="$file"
+  # Since 1.8.0, the location of cmctl in the archive file has been changed.
+  # cmctl -> ./cmctl
+  if is_greater "$version" "1.7.99"; then
+    target_file="./$file"
+  fi
+
+  curl -sL "$download_url" | tar xz -C "$tempdir" "$target_file"
 
   mkdir -p "$bin_install_path"
   mv "${tempdir}/${file}" "$bin_path"

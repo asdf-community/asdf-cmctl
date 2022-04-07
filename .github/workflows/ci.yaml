@@ -16,7 +16,13 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
     steps:
-    - uses: asdf-vm/actions/plugin-test@v1
+    - name: Test the plugin with v1.7.2
+      uses: asdf-vm/actions/plugin-test@v1
+      with:
+        version: 1.7.2
+        command: cmctl version --client
+    - name: Test the plugin with the latest version
+      uses: asdf-vm/actions/plugin-test@v1
       with:
         command: cmctl version --client
   lint:
