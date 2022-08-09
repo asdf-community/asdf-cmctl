@@ -34,9 +34,10 @@ function install_cmctl() {
   local tempdir="${TMPDIR:-"$(mktemp -d)"}"
 
   local target_file="$file"
-  # Since 1.8.0, the location of cmctl in the archive file has been changed.
+  # In versions 1.8.x, the location of cmctl in the archive file has been changed.
   # cmctl -> ./cmctl
-  if is_greater "$version" "1.7.99"; then
+  # In versions 1.9.x and greater the original path has been restored.
+  if is_greater "$version" "1.7.99" && ! is_greater "$version" "1.8.99"; then
     target_file="./$file"
   fi
 
