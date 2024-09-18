@@ -27,7 +27,7 @@ function install_cmctl() {
       ;;
   esac
 
-  local download_url="https://github.com/cert-manager/cmctl/releases/download/v${version}/cmctl-${kernel}-${architecture}.tar.gz"
+  local download_url="https://github.com/cert-manager/cmctl/releases/download/v${version}/cmctl_${kernel}_${architecture}.tar.gz"
 
   echo "Downloading cmctl from ${download_url}"
 
