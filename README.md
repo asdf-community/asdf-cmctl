@@ -6,7 +6,7 @@
 
 cmctl is a CLI tool that can help you to manage cert-manager resources inside your cluster.
 
-- https://github.com/jetstack/cert-manager
+- https://github.com/cert-manager/cmctl
 
 ## Install
 
