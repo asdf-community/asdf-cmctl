@@ -1,7 +1,5 @@
 # asdf-cmctl
 
-![CI](https://github.com/asdf-community/asdf-cmctl/workflows/CI/badge.svg)
-
 [cmctl](https://cert-manager.io/docs/usage/cmctl/) plugin for the [asdf](https://github.com/asdf-vm/asdf) version manager.
 
 cmctl is a CLI tool that can help you to manage cert-manager resources inside your cluster.
@@ -11,7 +9,7 @@ cmctl is a CLI tool that can help you to manage cert-manager resources inside yo
 ## Install
 
 ```
-asdf plugin-add cmctl https://github.com/asdf-community/asdf-cmctl.git
+asdf plugin add cmctl https://github.com/asdf-community/asdf-cmctl.git
 ```
 
 See https://asdf-vm.com/ for more detail on asdf-vm.
